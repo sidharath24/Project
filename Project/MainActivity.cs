@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
@@ -12,17 +13,33 @@ namespace Project
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-
+        TextView ShowAgeTv, AddressTv, PhoneTv, WelcomeTv;
+        SeekBar AgeSb;
+        RadioButton GraduatedRdb, ContinuedRdb;
+        Button NextBtn;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+            WelcomeTv = (TextView)FindViewById(Resource.Id.TvWelcome);
+            ShowAgeTv = (TextView)FindViewById(Resource.Id.TvAgeShow);
+            AddressTv = (TextView)FindViewById(Resource.Id.TvAddress);
+            PhoneTv = (TextView)FindViewById(Resource.Id.TvPhone);
+            AgeSb = (SeekBar)FindViewById(Resource.Id.SbAge);
+            GraduatedRdb = (RadioButton)FindViewById(Resource.Id.RdbGraduate);
+            ContinuedRdb = (RadioButton)FindViewById(Resource.Id.RdbContinued);
 
-            Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
+            WelcomeTv.Text = "Hey " + MainActivity.TvUsername.Text;
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            AgeSb.ProgressChanged += delegate
+            {
+                ShowAgeTv.Text = AgeSb.Progress.ToString();
+            };
+            NextBtn.Click += delegate
+            {
+                Intent intent = new Intent(this, typeof(Page3));
+                StartActivity(intent);
+            };
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
